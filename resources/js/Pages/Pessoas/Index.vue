@@ -95,10 +95,18 @@ const pessoasFiltradas = computed(() => {
 
                         <td>
                             <Link
-                                :href="`/pessoas/${pessoa.id}`"
+                                :href="`/pessoas/${pessoa.id}/edit`"
                                 class="btn-view"
                             >
                                 Ver
+                            </Link>
+
+                            <Link
+                                :href="`pessoas/${pessoa.id}`"
+                                class="btn-delete"
+                                method="DELETE"
+                                >
+                                Apagar
                             </Link>
                         </td>
                     </tr>
@@ -215,6 +223,12 @@ td {
 .btn-view {
     text-decoration: none;
     color: #2563eb;
+    font-weight: 500;
+}
+
+btn-delete {
+    text-decoration: none;
+    color: #eb2525;
     font-weight: 500;
 }
 
