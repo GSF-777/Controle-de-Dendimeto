@@ -1,5 +1,9 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3';
+import { formatarCPF,formatarTelefone,formatarCEP } from '../../utils/formatacao.js';
+import { computed } from 'vue';
+import { validarNome,validarCPF,validarTelefone,validarCEP } from '../../utils/validator.js';
+
 import AppLayout from '../layouts/layouts.vue';
 
 const form = useForm({
@@ -15,7 +19,14 @@ const form = useForm({
     bairro: '',
     cidade: '',
     estado: '',
-});
+})
+
+const erros = computed(() => ({
+    nome: validarNome(form.nome),
+    cpf: validarCPF(form.cpf),
+    telefone: validarTelefone(form.telefone),
+    cep: validarCEP(form.cep),
+}));
 
 const cadastrar = () => {
     form.post('/pessoas',{
@@ -36,7 +47,6 @@ const cadastrar = () => {
                 </div>
             </div>
 
-```
         <form @submit.prevent="cadastrar" class="form">
             
             <div class="section">
@@ -52,8 +62,8 @@ const cadastrar = () => {
                             placeholder="Digite o nome"
                         />
 
-                        <span v-if="form.errors.nome" class="error">
-                            {{ form.errors.nome }}
+                        <span v-if="erros.nome" class="error">
+                            {{ erros.nome }}
                         </span>
                     </div>
 
@@ -62,6 +72,7 @@ const cadastrar = () => {
 
                         <input
                             v-model="form.cpf"
+                            @input="form.cpf = formatarCPF(form.cpf)"
                             type="text"
                             placeholder="000.000.000-00"
                         />
@@ -72,6 +83,7 @@ const cadastrar = () => {
 
                         <input
                             v-model="form.telefone"
+                            @input="form.telefone = formatarTelefone(form.telefone)"
                             type="text"
                             placeholder="(00) 00000-0000"
                         />
@@ -115,6 +127,7 @@ const cadastrar = () => {
                         <input
                             v-model="form.cep"
                             type="text"
+                            @input="form.cep = formatarCEP(form.cep)"
                             placeholder="00000-000"
                         />
                     </div>

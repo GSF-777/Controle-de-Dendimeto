@@ -32,7 +32,6 @@ const pessoasFiltradas = computed(() => {
     <AppLayout>
         <div class="container">
 
-```
         <div class="header">
             <div>
                 <h1>Pessoas</h1>
