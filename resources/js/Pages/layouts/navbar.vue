@@ -20,7 +20,7 @@
             :class="{ active: $page.url === '/' }"
         >
             <span class="menu-icon">⌂</span>
-            <span>Dashboard</span>
+            <span>Home</span>
         </Link>
 
         <Link
@@ -29,25 +29,7 @@
             :class="{ active: $page.url.startsWith('pessoas/create') }"
         >
             <span class="menu-icon">♙</span>
-            <span>Pacientes</span>
-        </Link>
-
-        <Link
-            href="/pessoas"
-            class="menu-item"
-            :class="{ active: $page.url.startsWith('/pessoas') }"
-        >
-            <span class="menu-icon">▣</span>
-            <span>Atendimentos</span>
-        </Link>
-
-        <Link
-            href="/consultas"
-            class="menu-item"
-            :class="{ active: $page.url.startsWith('/consultas') }"
-        >
-            <span class="menu-icon">◷</span>
-            <span>Consultas</span>
+            <span>Cadastrar</span>
         </Link>
 
         <Link
@@ -56,7 +38,52 @@
             :class="{ active: $page.url.startsWith('/vacinas') }"
         >
             <span class="menu-icon">✚</span>
-            <span>Vacinas</span>
+            <span>registro</span>
+        </Link>
+
+        <Link
+            href="/pessoas"
+            class="menu-item"
+            :class="{ active: $page.url.startsWith('/pessoas') }"
+        >
+            <span class="menu-icon">▣</span>
+            <span>Lista d passientes</span>
+        </Link>
+
+        <Link
+            href="/consultas"
+            class="menu-item"
+            :class="{ active: $page.url.startsWith('/consultas') }"
+        >
+            <span class="menu-icon">◷</span>
+            <span>medicos</span>
+        </Link>
+
+        <Link
+            href="/vacinas"
+            class="menu-item"
+            :class="{ active: $page.url.startsWith('/vacinas') }"
+        >
+            <span class="menu-icon">✚</span>
+            <span>operaçõe</span>
+        </Link>
+
+        <Link
+            href="/vacinas"
+            class="menu-item"
+            :class="{ active: $page.url.startsWith('/vacinas') }"
+        >
+            <span class="menu-icon">✚</span>
+            <span></span>
+        </Link>
+
+        <Link
+            href="/vacinas"
+            class="menu-item"
+            :class="{ active: $page.url.startsWith('/vacinas') }"
+        >
+            <span class="menu-icon">✚</span>
+            <span>operaçõe</span>
         </Link>
     </nav>
 

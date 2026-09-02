@@ -56,3 +56,210 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Quero continuar o desenvolvimento do meu sistema Laravel + Vue + Inertia.
+
+Estamos trabalhando no CRUD de Pessoas.
+
+Minha arquitetura atual é:
+
+Vue/Inertia
+    ↓
+Controller
+    ↓
+FormRequest
+    ↓
+Service
+    ↓
+Model
+    ↓
+MySQL
+
+
+Quero melhorar a validação usando FormRequest do Laravel, deixando o backend como responsável principal pelas regras de validação.
+
+O que quero fazer
+
+Quero implementar:
+
+StorePessoaRequest para cadastro.
+UpdatePessoaRequest para edição.
+Mensagens de validação personalizadas em português.
+Validação de CPF.
+Validação de CPF único.
+No update, permitir que a pessoa mantenha o próprio CPF sem gerar erro de duplicidade.
+Validação de telefone.
+Validação de CEP.
+Validação dos campos obrigatórios.
+Validação do tipo_atendimento.
+Validação do estado.
+Fazer o Laravel devolver os erros automaticamente para o Vue através do Inertia.
+No Vue, usar form.errors para mostrar os erros nos respectivos campos.
+Evitar duplicar no Vue as regras que já existem no Laravel.
+Manter no Vue apenas máscaras e melhorias de experiência do usuário quando fizer sentido.
+Campos da tabela pessoas
+$table->id();
+$table->string('nome');
+$table->string('cpf')->unique();
+$table->string('telefone');
+$table->string('tipo_atendimento');
+
+Campos da tabela de endereços
+$table->id();
+
+$table->foreignId('pessoa_id')
+    ->unique()
+    ->constrained()
+    ->cascadeOnDelete();
+
+$table->string('cep', 9);
+$table->string('logradouro');
+$table->string('numero', 10);
+$table->string('complemento')->nullable();
+$table->string('bairro');
+$table->string('cidade');
+$table->char('estado', 2);
+
+Valores de tipo_atendimento usados atualmente
+Consulta
+Exame
+Emergência
+Retorno
+
+Meu Controller atual
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Services\PessoaService;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+
+class PessoaController extends Controller
+{
+    public function __construct(
+        private PessoaService $pessoaService
+    ) {
+    }
+
+    public function index()
+    {
+        $pessoas = $this->pessoaService->listar();
+
+        return Inertia::render('Pessoas/Index', [
+            'pessoas' => $pessoas,
+        ]);
+    }
+
+    public function create()
+    {
+        return Inertia::render('Pessoas/Create');
+    }
+
+    public function store(Request $request)
+    {
+        $this->pessoaService->criar(
+            $request->all(),
+        );
+
+        return redirect()
+            ->route('pessoas.index')
+            ->with('success', 'Pessoa cadastrada com sucesso!');
+    }
+
+    public function show(int $id)
+    {
+        $pessoa = $this->pessoaService->buscarPorId($id);
+
+        return Inertia::render('Pessoas/Show', [
+            'pessoa' => $pessoa,
+        ]);
+    }
+
+    public function edit(int $id)
+    {
+        $pessoa = $this->pessoaService->buscarPorId($id);
+
+        return Inertia::render('Pessoas/Edit', [
+            'pessoa' => $pessoa,
+        ]);
+    }
+
+    public function update(Request $request, int $id)
+    {
+        $this->pessoaService->atualizar(
+            $id,
+            $request->all()
+        );
+
+        return redirect()
+            ->route('pessoas.index')
+            ->with('success', 'Pessoa atualizada com sucesso!');
+    }
+
+    public function destroy(int $id)
+    {
+        $this->pessoaService->excluir($id);
+
+        return redirect()
+            ->route('pessoas.index')
+            ->with('success', 'Pessoa removida com sucesso!');
+    }
+}
+
+
+Quero que você me ajude a refatorar esse Controller para usar:
+
+StorePessoaRequest
+
+
+no store() e:
+
+UpdatePessoaRequest
+
+
+no update().
+
+Também quero que você analise meu PessoaService antes de fazer mudanças, porque não quero quebrar a arquitetura atual.
+
+Quero que o fluxo final fique assim:
+
+Create.vue
+    ↓
+POST /pessoas
+    ↓
+StorePessoaRequest
+    ↓
+PessoaController
+    ↓
+PessoaService
+    ↓
+MySQL
+
+
+E:
+
+Edit.vue
+    ↓
+PUT/PATCH /pessoas/{id}
+    ↓
+UpdatePessoaRequest
+    ↓
+PessoaController
+    ↓

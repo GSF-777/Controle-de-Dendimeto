@@ -45,7 +45,7 @@ class PessoaService
         });
     }
 
-    public function atualizar(int $id, array $dados)
+    public function atualizar(int $id, array $dados): Pessoa
     {
         return DB::transaction(function () use ($id, $dados) {
 
@@ -58,19 +58,25 @@ class PessoaService
                 'tipo_atendimento' => $dados['tipo_atendimento'],
             ]);
 
-            $pessoa->endereco()->update([
-                'cep' => $dados['cep'],
-                'logradouro' => $dados['logradouro'],
-                'numero' => $dados['numero'],
-                'complemento' => $dados['complemento'] ?? null,
-                'bairro' => $dados['bairro'],
-                'cidade' => $dados['cidade'],
-                'estado' => $dados['estado'],
-            ]);
+            $pessoa->endereco()->updateOrCreate(
+                [
+                    'pessoa_id' => $pessoa->id,
+                ],
+                [
+                    'cep' => $dados['cep'],
+                    'logradouro' => $dados['logradouro'],
+                    'numero' => $dados['numero'],
+                    'complemento' => $dados['complemento'] ?? null,
+                    'bairro' => $dados['bairro'],
+                    'cidade' => $dados['cidade'],
+                    'estado' => $dados['estado'],
+                ]
+            );
 
-            return $pessoa;
+            return $pessoa->fresh();
         });
     }
+
 
     public function excluir(int $id)
     {

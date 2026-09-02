@@ -1,6 +1,7 @@
 <script setup>
 import { Link, useForm } from '@inertiajs/vue3'
 import { formatarCEP,formatarCPF, formatarTelefone } from '../../utils/formatacao'
+import AppLayout from '../layouts/layouts.vue';
 
 const props = defineProps({
     pessoa: {
@@ -30,6 +31,7 @@ const submit = () => {
 </script>
 
 <template>
+    <AppLayout>
     <div class="pessoa-page">
         <div class="pessoa-container">
 
@@ -341,8 +343,7 @@ const submit = () => {
 
     </div>
 </div>
-```
-
+</AppLayout>
 </template>
 
 <style>
